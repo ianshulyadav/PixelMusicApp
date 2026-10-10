@@ -79,11 +79,12 @@ jobs:
           } > keystore.properties
 
       - name: Build alpha release APKs
-        run: >
-          ./gradlew :app:assembleRelease
-          -Ppixelplayer.enableAbiSplits=true
-          -PAPP_VERSION_NAME=${{ steps.version.outputs.name }}
-          -PAPP_VERSION_CODE=${{ steps.version.outputs.code }}
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleRelease \
+            -Ppixelplayer.enableAbiSplits=true \
+            -PAPP_VERSION_NAME=${{ steps.version.outputs.name }} \
+            -PAPP_VERSION_CODE=${{ steps.version.outputs.code }}
 
       - name: Verify and rename split APKs
         run: |
