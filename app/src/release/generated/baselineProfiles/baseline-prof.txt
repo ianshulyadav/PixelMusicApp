@@ -1,4 +1,4 @@
-﻿Landroidx/activity/ActivityFlags;
+Landroidx/activity/ActivityFlags;
 SPLandroidx/activity/ActivityFlags;-><clinit>()V
 SPLandroidx/activity/ActivityFlags;-><init>()V
 PLandroidx/activity/BackEventCompat;-><clinit>()V
