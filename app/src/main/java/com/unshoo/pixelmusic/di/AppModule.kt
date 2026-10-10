@@ -29,6 +29,7 @@ import com.unshoo.pixelmusic.data.database.MIGRATION_2_3
 import com.unshoo.pixelmusic.data.database.MIGRATION_3_4
 import com.unshoo.pixelmusic.data.database.MIGRATION_4_5
 import com.unshoo.pixelmusic.data.database.MIGRATION_5_6
+import com.unshoo.pixelmusic.data.database.MIGRATION_6_7
 import com.unshoo.pixelmusic.data.database.MusicDao
 import com.unshoo.pixelmusic.data.database.OfflineTrackDao
 import com.unshoo.pixelmusic.data.database.PixelPlayerDatabase
@@ -139,6 +140,7 @@ object AppModule {
                 MIGRATION_3_4,
                 MIGRATION_4_5,
                 MIGRATION_5_6,
+                MIGRATION_6_7,
             )
             .setJournalMode(RoomDatabase.JournalMode.WRITE_AHEAD_LOGGING)
 

@@ -199,3 +199,43 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
         )
     }
 }
+
+/** v6 -> v7: persist RSS podcast subscriptions and their playable audio episodes. */
+val MIGRATION_6_7 = object : Migration(6, 7) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            """
+                CREATE TABLE IF NOT EXISTS `podcast_feeds` (
+                    `id` TEXT NOT NULL,
+                    `title` TEXT NOT NULL,
+                    `description` TEXT,
+                    `artwork_url` TEXT,
+                    `added_at` INTEGER NOT NULL,
+                    PRIMARY KEY(`id`)
+                )
+            """.trimIndent()
+        )
+        db.execSQL(
+            """
+                CREATE TABLE IF NOT EXISTS `podcast_episodes` (
+                    `id` TEXT NOT NULL,
+                    `feed_id` TEXT NOT NULL,
+                    `guid` TEXT NOT NULL,
+                    `title` TEXT NOT NULL,
+                    `description` TEXT,
+                    `audio_url` TEXT NOT NULL,
+                    `artwork_url` TEXT,
+                    `published_at` INTEGER,
+                    `duration_ms` INTEGER,
+                    PRIMARY KEY(`id`),
+                    FOREIGN KEY(`feed_id`) REFERENCES `podcast_feeds`(`id`)
+                        ON UPDATE NO ACTION ON DELETE CASCADE
+                )
+            """.trimIndent()
+        )
+        db.execSQL(
+            "CREATE INDEX IF NOT EXISTS `index_podcast_episodes_feed_id_published_at` " +
+                "ON `podcast_episodes` (`feed_id`, `published_at`)"
+        )
+    }
+}

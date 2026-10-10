@@ -374,6 +374,7 @@ fun LibraryScreen(
     var showCreatePlaylistDialog by remember { mutableStateOf(false) }
     var showPlaylistCreationTypeDialog by remember { mutableStateOf(false) }
     var showDescribePlaylistDialog by remember { mutableStateOf(false) }
+    var showAddPodcastFeedDialog by remember { mutableStateOf(false) }
 
     val m3uImportLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -631,6 +632,7 @@ fun LibraryScreen(
         LibraryTabId.LIKED,
         LibraryTabId.FOLDERS -> isSelectionMode
         LibraryTabId.ARTISTS -> isArtistSelectionMode
+        LibraryTabId.PODCASTS -> false
     }
     val canHandleFolderBack by remember {
         derivedStateOf {
@@ -669,6 +671,7 @@ fun LibraryScreen(
                         multiSelectionState.clearSelection()
                         showMultiSelectionSheet = false
                     }
+                    LibraryTabId.PODCASTS -> Unit
 
                 }
             }
@@ -730,7 +733,7 @@ fun LibraryScreen(
         }
     ) { page ->
         when (tabTitles.getOrNull(page)?.toLibraryTabIdOrNull()) {
-            LibraryTabId.PLAYLISTS -> 0f
+            LibraryTabId.PLAYLISTS, LibraryTabId.PODCASTS -> 0f
             else -> 360f
         }
     }
@@ -984,6 +987,7 @@ fun LibraryScreen(
                             LibraryTabId.PLAYLISTS -> playlistUiState.currentPlaylistSortOption
                             LibraryTabId.LIKED -> playerUiState.currentFavoriteSortOption
                             LibraryTabId.FOLDERS -> playerUiState.currentFolderSortOption
+                            LibraryTabId.PODCASTS -> null
                         }
 
                         val showLocateButton = when (currentTabId) {
@@ -1008,6 +1012,7 @@ fun LibraryScreen(
                                     LibraryTabId.PLAYLISTS -> playlistViewModel.sortPlaylists(option)
                                     LibraryTabId.LIKED -> playerViewModel.sortFavoriteSongs(option)
                                     LibraryTabId.FOLDERS -> playerViewModel.sortFolders(option)
+                                    LibraryTabId.PODCASTS -> Unit
                                 }
                             }
                         }
@@ -1110,6 +1115,7 @@ fun LibraryScreen(
                                     onMainActionClick = {
                                         when (tabTitles.getOrNull(currentTabIndex)?.toLibraryTabIdOrNull()) {
                                             LibraryTabId.PLAYLISTS -> showPlaylistCreationTypeDialog = true
+                                            LibraryTabId.PODCASTS -> showAddPodcastFeedDialog = true
                                             LibraryTabId.LIKED -> playerViewModel.shuffleFavoriteSongs()
                                             LibraryTabId.ALBUMS -> playerViewModel.shuffleRandomAlbum()
                                             LibraryTabId.ARTISTS -> playerViewModel.shuffleRandomArtist()
@@ -1117,11 +1123,13 @@ fun LibraryScreen(
                                         }
                                     },
                                     iconRotation = iconRotation,
-                                    showSortButton = sanitizedSortOptions.isNotEmpty(),
+                                    showSortButton = currentTabId != LibraryTabId.PODCASTS &&
+                                            sanitizedSortOptions.isNotEmpty(),
                                     showLocateButton = showLocateButton,
                                     onSortClick = { playerViewModel.showSortingSheet() },
                                     onLocateClick = { locateAction?.invoke() },
                                     isPlaylistTab = currentTabId == LibraryTabId.PLAYLISTS,
+                                    isPodcastTab = currentTabId == LibraryTabId.PODCASTS,
                                     isFoldersTab = currentTabId == LibraryTabId.FOLDERS && (!playerUiState.isFoldersPlaylistView || playerUiState.currentFolder != null),
                                     onImportM3uClick = { m3uImportLauncher.launch("audio/x-mpegurl") },
                                     currentFolder = playerUiState.currentFolder,
@@ -1481,6 +1489,17 @@ fun LibraryScreen(
                                         )
                                     }
 
+                                    LibraryTabId.PODCASTS -> {
+                                        PodcastsTab(
+                                            playerViewModel = playerViewModel,
+                                            bottomBarHeight = bottomBarHeightDp,
+                                            showAddFeedDialog = showAddPodcastFeedDialog,
+                                            onAddFeedDialogDismiss = {
+                                                showAddPodcastFeedDialog = false
+                                            }
+                                        )
+                                    }
+
                                     null -> Unit
                                 }
                             }
@@ -1492,6 +1511,7 @@ fun LibraryScreen(
                                 LibraryTabId.SONGS,
                                 LibraryTabId.LIKED,
                                 LibraryTabId.FOLDERS -> selectedSongs.size
+                                LibraryTabId.PODCASTS -> 0
                             }
                             SelectionCountPill(
                                 selectedCount = selectionCount,
@@ -2507,6 +2527,7 @@ private fun LibraryTabId.iconRes(): Int = when (this) {
     LibraryTabId.PLAYLISTS -> R.drawable.rounded_playlist_play_24
     LibraryTabId.FOLDERS -> R.drawable.rounded_folder_24
     LibraryTabId.LIKED -> R.drawable.round_favorite_24
+    LibraryTabId.PODCASTS -> R.drawable.rounded_headphones_24
 }
 
 @Composable

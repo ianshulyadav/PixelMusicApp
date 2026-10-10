@@ -36,6 +36,7 @@ import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.MyLocation
 import androidx.compose.material.icons.rounded.Shuffle
+import androidx.compose.material.icons.rounded.RssFeed
 import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material.icons.rounded.Cloud
 import androidx.compose.material.icons.rounded.Dataset
@@ -92,6 +93,7 @@ fun LibraryActionRow(
     showLocateButton: Boolean = false,
     showImportButton: Boolean = true,
     isPlaylistTab: Boolean,
+    isPodcastTab: Boolean = false,
     onImportM3uClick: () -> Unit = {},
     isFoldersTab: Boolean,
     modifier: Modifier = Modifier,
@@ -167,16 +169,22 @@ fun LibraryActionRow(
                         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                         modifier = Modifier.height(genHeight)
                     ) {
-                        val icon = if (isPlaylistTab) Icons.AutoMirrored.Rounded.PlaylistAdd else Icons.Rounded.Shuffle
-                        val text = if (isPlaylistTab) {
-                            stringResource(R.string.library_action_new)
-                        } else {
-                            stringResource(R.string.shortcut_shuffle_short)
+                        val icon = when {
+                            isPodcastTab -> Icons.Rounded.RssFeed
+                            isPlaylistTab -> Icons.AutoMirrored.Rounded.PlaylistAdd
+                            else -> Icons.Rounded.Shuffle
                         }
-                        val contentDesc = if (isPlaylistTab) {
-                            stringResource(R.string.cd_create_new_playlist)
-                        } else {
-                            stringResource(R.string.cd_shuffle_play)
+                        val text = when {
+                            isPodcastTab -> stringResource(R.string.library_action_add_podcast_feed)
+                            isPlaylistTab -> {
+                            stringResource(R.string.library_action_new)
+                            }
+                            else -> stringResource(R.string.shortcut_shuffle_short)
+                        }
+                        val contentDesc = when {
+                            isPodcastTab -> stringResource(R.string.cd_add_podcast_feed)
+                            isPlaylistTab -> stringResource(R.string.cd_create_new_playlist)
+                            else -> stringResource(R.string.cd_shuffle_play)
                         }
 
                         Row(

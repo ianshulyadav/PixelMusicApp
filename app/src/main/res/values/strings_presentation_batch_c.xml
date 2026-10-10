@@ -14,6 +14,23 @@
     <!-- Library action row -->
     <string name="library_action_new">New</string>
     <string name="cd_create_new_playlist">Create new playlist</string>
+    <string name="library_tab_podcasts">Podcasts</string>
+    <string name="library_action_add_podcast_feed">Add podcast</string>
+    <string name="cd_add_podcast_feed">Add podcast RSS feed</string>
+    <string name="podcast_add_feed_title">Add podcast RSS feed</string>
+    <string name="podcast_feed_url_label">RSS feed URL</string>
+    <string name="podcast_feed_url_hint">https://example.com/podcast.xml</string>
+    <string name="podcast_feed_add">Add feed</string>
+    <string name="podcast_feed_refresh">Refresh feeds</string>
+    <string name="podcast_feed_remove">Remove feed</string>
+    <string name="podcast_feed_remove_title">Remove podcast?</string>
+    <string name="podcast_feed_remove_message">Remove %1$s and its downloaded episode list?</string>
+    <string name="podcast_feed_empty_title">No podcasts yet</string>
+    <string name="podcast_feed_empty_message">Add an RSS feed to subscribe to a podcast and play its episodes here.</string>
+    <string name="podcast_episodes_empty">No episodes found in this feed.</string>
+    <string name="podcast_refreshing">Refreshing podcasts…</string>
+    <string name="podcast_error_title">Could not load podcasts</string>
+    <string name="podcast_play_episode">Play episode</string>
     <string name="cd_import_m3u_playlist">Import M3U playlist</string>
     <string name="cd_locate_current_song">Locate current song</string>
     <string name="library_storage_filter_all_songs">All</string>

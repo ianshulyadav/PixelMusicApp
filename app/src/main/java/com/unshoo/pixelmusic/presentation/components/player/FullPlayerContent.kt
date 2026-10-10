@@ -518,6 +518,7 @@ fun FullPlayerContent(
             currentSheetState = currentSheetState,
             isPlayingProvider = isPlayingProvider,
             playWhenReadyProvider = playWhenReadyProvider,
+            isLandscape = isLandscape,
             placeholderColor = placeholderColor,
             placeholderOnColor = placeholderOnColor,
             albumArtQuality = albumArtQuality,
@@ -888,7 +889,6 @@ fun FullPlayerContent(
 }
 
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 private fun FullPlayerAlbumCoverSection(
     song: Song,
@@ -901,6 +901,7 @@ private fun FullPlayerAlbumCoverSection(
     currentSheetState: PlayerSheetState,
     isPlayingProvider: () -> Boolean,
     playWhenReadyProvider: () -> Boolean,
+    isLandscape: Boolean,
     placeholderColor: Color,
     placeholderOnColor: Color,
     albumArtQuality: AlbumArtQuality,
@@ -922,12 +923,12 @@ private fun FullPlayerAlbumCoverSection(
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
-        val carouselHeight = when (carouselStyle) {
-            CarouselStyle.NO_PEEK -> maxWidth
-            CarouselStyle.ONE_PEEK -> maxWidth * 0.8f
-            CarouselStyle.TWO_PEEK -> maxWidth * 0.6f
-            else -> maxWidth * 0.8f
-        }
+        val carouselHeight = calculateFullPlayerCarouselHeight(
+            maxWidth = maxWidth,
+            maxHeight = maxHeight,
+            carouselStyle = carouselStyle,
+            isLandscape = isLandscape
+        )
 
         DelayedContent(
             shouldDelay = shouldDelay,
@@ -988,6 +989,26 @@ private fun FullPlayerAlbumCoverSection(
             )
         }
     }
+}
+
+internal fun calculateFullPlayerCarouselHeight(
+    maxWidth: Dp,
+    maxHeight: Dp,
+    carouselStyle: String,
+    isLandscape: Boolean
+): Dp {
+    val preferredCarouselHeight = when (carouselStyle) {
+        CarouselStyle.NO_PEEK -> maxWidth
+        CarouselStyle.ONE_PEEK -> maxWidth * 0.8f
+        CarouselStyle.TWO_PEEK -> maxWidth * 0.6f
+        else -> maxWidth * 0.8f
+    }
+    val availableCarouselHeight = if (isLandscape) {
+        maxHeight * 0.9f
+    } else {
+        (maxHeight - 380.dp).coerceAtLeast(180.dp).coerceAtMost(maxHeight)
+    }
+    return preferredCarouselHeight.coerceAtMost(availableCarouselHeight)
 }
 
 @Composable

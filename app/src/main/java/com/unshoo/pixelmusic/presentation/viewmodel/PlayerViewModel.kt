@@ -947,17 +947,22 @@ class PlayerViewModel @Inject constructor(
 
     val libraryTabsFlow: StateFlow<ImmutableList<String>> = userPreferencesRepository.libraryTabsOrderFlow
         .map { orderJson ->
-            if (orderJson != null) {
+            val storedOrder = if (orderJson != null) {
                 try {
-                    Json.decodeFromString<List<String>>(orderJson).toImmutableList()
+                    Json.decodeFromString<List<String>>(orderJson)
                 } catch (e: Exception) {
-                    persistentListOf("SONGS", "ALBUMS", "ARTIST", "PLAYLISTS", "FOLDERS", "LIKED")
+                    LibraryTabId.entries.map { it.storageKey }
                 }
             } else {
-                persistentListOf("SONGS", "ALBUMS", "ARTIST", "PLAYLISTS", "FOLDERS", "LIKED")
+                LibraryTabId.entries.map { it.storageKey }
             }
+            (storedOrder + LibraryTabId.PODCASTS.storageKey).distinct().toImmutableList()
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentListOf("SONGS", "ALBUMS", "ARTIST", "PLAYLISTS", "FOLDERS", "LIKED"))
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            LibraryTabId.entries.map { it.storageKey }.toImmutableList()
+        )
 
     private val _loadedTabs = MutableStateFlow(emptySet<String>())
     private var lastBlockedDirectories: Set<String>? = null
@@ -979,6 +984,7 @@ class PlayerViewModel @Inject constructor(
                     LibraryTabId.PLAYLISTS -> SortOption.PLAYLISTS
                     LibraryTabId.FOLDERS -> SortOption.FOLDERS
                     LibraryTabId.LIKED -> SortOption.LIKED
+                    LibraryTabId.PODCASTS -> emptyList()
                 }
             } finally {
                 Trace.endSection()

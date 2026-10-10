@@ -89,6 +89,11 @@ enum class LibraryTabId(
             SortOption.LikedSongDateLiked,
             SortOption.LikedSongDateLikedAsc
         )
+    ),
+    Podcasts(
+        stableKey = "PODCASTS",
+        labelRes = R.string.library_tab_podcasts,
+        sortOptions = emptyList()
     );
 
     companion object {

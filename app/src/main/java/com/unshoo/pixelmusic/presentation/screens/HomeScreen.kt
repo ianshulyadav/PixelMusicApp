@@ -84,7 +84,6 @@ import com.unshoo.pixelmusic.R
 import com.unshoo.pixelmusic.data.model.Song
 import com.unshoo.pixelmusic.data.preferences.CollagePattern
 import com.unshoo.pixelmusic.presentation.components.AlbumArtCollage
-import com.unshoo.pixelmusic.presentation.components.BetaInfoBottomSheet
 import com.unshoo.pixelmusic.presentation.components.ChangelogBottomSheet
 import com.unshoo.pixelmusic.presentation.jellyfin.dashboard.JellyfinDashboardViewModel
 import com.unshoo.pixelmusic.presentation.navidrome.dashboard.NavidromeDashboardViewModel
@@ -238,10 +237,8 @@ fun HomeScreen(
 
     var showOptionsBottomSheet by remember { mutableStateOf(false) }
     var showChangelogBottomSheet by remember { mutableStateOf(false) }
-    var showBetaInfoBottomSheet by remember { mutableStateOf(false) }
     var showStreamingProviderSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalSheetState()
-    val betaSheetState = rememberModalSheetState()
     val scope = rememberCoroutineScope()
     LocalContext.current
 
@@ -299,9 +296,6 @@ fun HomeScreen(
                     },
                     onMoreOptionsClick = {
                         showChangelogBottomSheet = true
-                    },
-                    onBetaClick = {
-                        showBetaInfoBottomSheet = true
                     },
                     onStreamingClick = {
                           showStreamingProviderSheet = true
@@ -515,14 +509,6 @@ fun HomeScreen(
             sheetState = sheetState
         ) {
             ChangelogBottomSheet()
-        }
-    }
-    if (showBetaInfoBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showBetaInfoBottomSheet = false },
-            sheetState = betaSheetState,
-        ) {
-            BetaInfoBottomSheet()
         }
     }
     if (showStreamingProviderSheet) {

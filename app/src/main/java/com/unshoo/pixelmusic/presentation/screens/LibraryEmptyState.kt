@@ -122,6 +122,12 @@ private fun libraryEmptySpec(
             titleRes = R.string.lib_empty_playlists_title,
             subtitleRes = R.string.lib_empty_playlists_subtitle
         )
+
+        LibraryTabId.PODCASTS -> LibraryEmptySpec(
+            iconRes = R.drawable.rounded_headphones_24,
+            titleRes = R.string.podcast_feed_empty_title,
+            subtitleRes = R.string.podcast_feed_empty_message
+        )
     }
 }
 
