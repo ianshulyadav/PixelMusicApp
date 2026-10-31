@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.11] - 2026-10-31
+
+### ✨ What's New
+- **Custom Proxy Support:** Full HTTP & SOCKS5 proxy with authentication and connection testing in Settings.
+- **Edge-to-Edge Lyrics Blur:** Seamless Gaussian blur covering the full screen and transparent status bar.
+
+### ⚡ Fixes & Improvements
+- **Instant Resume:** Refreshes expired audio links after pauses to eliminate playback stalls.
+- **Call & Audio Focus Recovery:** Fixed stutter and glitches when returning from calls.
+- **Cold Start Restoration:** Restores your last song and queue cleanly on startup.
+- **Artist & Search Polish:** Fixed search metadata display and improved artist page scrolling.
+- **Smarter Auto-Queue:** Reduced duplicate tracks during continuous playback.
+- **Smooth Gestures:** Refined 120Hz Explore scrolling and player sheet drag physics.
+
 ## [1.8.10] - 2026-10-24
 
 ### ✨ What's New
